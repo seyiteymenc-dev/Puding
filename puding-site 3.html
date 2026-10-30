@@ -1,0 +1,838 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>[hidden]{display:none!important} body{margin:0} img{max-width:100%}</style>
+<title>Puding</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&family=Titan+One&display=swap">
+<style>
+  /* Düzen: solda büyük tıklanabilir logo, sağda isim ve slogan; logoya basınca altta kuruluş hikâyesi açılır. */
+  :root {
+    --bg: #fde8f0;
+    --fg: #3a1b2a;
+    --muted: #7a4a5e;
+    --custard: #ffd966;
+    --caramel: #b5651d;
+    --cherry: #d62839;
+    --on-cherry: #ffffff;
+    --on-custard: #3a1b2a;
+    --plate: #ffffff;
+    --panel: #fff7fa;
+    --line: #3a1b2a;
+
+    --font-display: "Titan One", "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif;
+    --font-body: "Nunito", "Segoe UI", system-ui, -apple-system, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #26121d;
+      --fg: #fde8f0;
+      --muted: #d9afc2;
+      --caramel: #d98a3d;
+      --cherry: #ff5468;
+      --on-cherry: #26121d;
+      --plate: #4a2a3b;
+      --panel: #35192a;
+      --line: #fde8f0;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #26121d;
+    --fg: #fde8f0;
+    --muted: #d9afc2;
+    --caramel: #d98a3d;
+    --cherry: #ff5468;
+    --on-cherry: #26121d;
+    --plate: #4a2a3b;
+    --panel: #35192a;
+    --line: #fde8f0;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    padding-block: 2.5rem 3rem;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .wrap { max-width: 56rem; margin: 0 auto; display: grid; gap: 2rem; }
+
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: center;
+    justify-items: start;
+  }
+  @media (min-width: 760px) {
+    .hero { grid-template-columns: minmax(0, 20rem) minmax(0, 1fr); gap: 3rem; }
+  }
+
+  .logo-btn {
+    appearance: none;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    width: min(100%, 20rem);
+    border-radius: 2rem;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .logo-btn svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .logo-btn:focus-visible { outline: 4px solid var(--cherry); outline-offset: 6px; }
+  .logo-btn:hover svg .pudding { transform: rotate(-2deg); }
+  .pudding {
+    transform-origin: 120px 200px;
+    transition: transform 0.25s ease;
+  }
+  .logo-btn.wobble .pudding { animation: wobble 0.7s ease; }
+  @keyframes wobble {
+    0% { transform: scale(1, 1); }
+    20% { transform: scale(1.06, 0.92) rotate(-3deg); }
+    45% { transform: scale(0.96, 1.07) rotate(3deg); }
+    70% { transform: scale(1.03, 0.98) rotate(-1.5deg); }
+    100% { transform: scale(1, 1) rotate(0); }
+  }
+
+  .s-plate { fill: var(--plate); stroke: var(--line); stroke-width: 4; }
+  .s-body { fill: var(--custard); stroke: var(--line); stroke-width: 4; stroke-linejoin: round; }
+  .s-caramel { fill: var(--caramel); stroke: var(--line); stroke-width: 4; stroke-linejoin: round; }
+  .s-cherry { fill: var(--cherry); stroke: var(--line); stroke-width: 4; }
+  .s-stem { fill: none; stroke: var(--line); stroke-width: 4; stroke-linecap: round; }
+  .s-ink { fill: var(--line); }
+  .s-smile { fill: none; stroke: var(--line); stroke-width: 4; stroke-linecap: round; }
+  .s-cheek { fill: var(--cherry); opacity: 0.55; }
+
+  .intro h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(3.5rem, 14vw, 6.5rem);
+    line-height: 0.95;
+    letter-spacing: 0.01em;
+    margin: 0 0 1rem;
+    color: var(--cherry);
+    text-wrap: balance;
+  }
+  .intro p { margin: 0; max-width: 34ch; font-size: 1.25rem; font-weight: 700; text-wrap: balance; }
+  .hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+    font-weight: 800;
+    font-size: 0.9375rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .hint::before { content: "↑"; font-size: 1.25rem; color: var(--cherry); }
+  @media (min-width: 760px) { .hint::before { content: "←"; } }
+
+  .story {
+    background: var(--panel);
+    border: 3px solid var(--line);
+    border-radius: 1.5rem;
+    box-shadow: 8px 8px 0 var(--line);
+    padding: clamp(1.25rem, 4vw, 2.25rem);
+    display: grid;
+    gap: 1.75rem;
+    scroll-margin-top: 1rem;
+  }
+  .story:not([hidden]) { animation: rise 0.4s ease both; }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+  }
+  .story h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
+    line-height: 1.1;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .story-grid { display: grid; gap: 1.5rem; }
+  @media (min-width: 760px) {
+    .story-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 2rem; }
+  }
+  .chapter { min-width: 0; }
+  .chapter h3 {
+    margin: 0 0 0.35rem;
+    font-size: 0.8125rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--cherry);
+  }
+  .chapter p { margin: 0; max-width: 62ch; }
+  .chapter.wide { grid-column: 1 / -1; }
+
+  .card {
+    margin: 0;
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: 0.5rem 1.25rem;
+    padding: 1rem 1.25rem;
+    border: 3px solid var(--line);
+    border-radius: 1rem;
+    background: var(--bg);
+  }
+  .card dt { font-weight: 800; color: var(--muted); }
+  .card dd { margin: 0; font-weight: 800; }
+
+  .support {
+    display: grid;
+    gap: 0.9rem;
+    justify-items: start;
+    padding-top: 1.5rem;
+    border-top: 3px dashed var(--line);
+  }
+  .support p { margin: 0; font-size: 1.25rem; font-weight: 800; text-wrap: balance; }
+  .support-btn {
+    appearance: none;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 800;
+    font-size: 1.125rem;
+    padding: 0.8rem 1.6rem;
+    border-radius: 999px;
+    border: 3px solid var(--line);
+    background: var(--cherry);
+    color: var(--on-cherry);
+    box-shadow: 4px 4px 0 var(--line);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+  .support-btn:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--line); }
+  .support-btn:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--line); }
+  .support-btn:focus-visible { outline: 4px solid var(--fg); outline-offset: 4px; }
+  .support-btn[aria-pressed="true"] { background: var(--custard); color: #3a1b2a; }
+  .thanks { min-height: 1.6em; margin: 0; font-weight: 700; color: var(--muted); }
+
+  .ai {
+    background: var(--panel);
+    border: 3px solid var(--line);
+    border-radius: 1.5rem;
+    padding: clamp(1.25rem, 4vw, 2rem);
+    display: grid;
+    gap: 1rem;
+  }
+  .ai-head { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.9rem; }
+  .ai-head h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
+    line-height: 1.1;
+    margin: 0;
+  }
+  .badge {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.65rem;
+    border: 2px solid var(--line);
+    border-radius: 999px;
+    background: var(--custard);
+    color: var(--on-custard);
+  }
+  .ai-lead { margin: 0; font-weight: 700; }
+  .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .chip {
+    appearance: none;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.9375rem;
+    font-weight: 800;
+    padding: 0.4rem 0.9rem;
+    border: 2px solid var(--line);
+    border-radius: 999px;
+    background: var(--bg);
+    color: var(--fg);
+  }
+  .chip:hover { background: var(--custard); color: var(--on-custard); }
+  .chip:focus-visible { outline: 3px solid var(--cherry); outline-offset: 2px; }
+  .chip:disabled { opacity: 0.5; cursor: default; }
+
+  .ai-log {
+    display: grid;
+    align-content: start;
+    gap: 0.6rem;
+    max-height: 24rem;
+    min-height: 9rem;
+    overflow-y: auto;
+    padding: 0.25rem;
+  }
+  .msg {
+    max-width: min(85%, 34rem);
+    margin: 0;
+    padding: 0.6rem 0.95rem;
+    border: 3px solid var(--line);
+    border-radius: 1.1rem;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+  .msg.bot { justify-self: start; background: var(--custard); color: var(--on-custard); border-bottom-left-radius: 0.3rem; }
+  .msg.me { justify-self: end; background: var(--cherry); color: var(--on-cherry); border-bottom-right-radius: 0.3rem; }
+
+  .ai-form { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .ai-form input {
+    flex: 1 1 12rem;
+    min-width: 0;
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 0.7rem 1.1rem;
+    border: 3px solid var(--line);
+    border-radius: 999px;
+    background: var(--bg);
+    color: var(--fg);
+  }
+  .ai-form input::placeholder { color: var(--muted); opacity: 1; }
+  .ai-form input:focus-visible { outline: 3px solid var(--cherry); outline-offset: 2px; }
+  .ai-send:disabled { opacity: 0.6; cursor: default; }
+  .stop-btn {
+    appearance: none;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 800;
+    padding: 0.7rem 1.2rem;
+    border: 3px solid var(--line);
+    border-radius: 999px;
+    background: var(--panel);
+    color: var(--fg);
+  }
+  .stop-btn:focus-visible { outline: 3px solid var(--cherry); outline-offset: 2px; }
+  .ai-note { margin: 0; font-size: 0.875rem; font-weight: 700; color: var(--muted); }
+  .sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  footer { color: var(--muted); font-size: 0.9375rem; font-weight: 700; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logo-btn.wobble .pudding, .story:not([hidden]) { animation: none; }
+    .pudding, .support-btn { transition: none; }
+  }
+</style>
+
+<main class="wrap">
+  <section class="hero">
+    <button class="logo-btn" id="logo" type="button" aria-expanded="false" aria-controls="story" aria-label="Puding logosu. Puding'in hikâyesini aç veya kapat">
+      <svg viewBox="0 0 240 240" role="img" aria-hidden="true">
+        <ellipse class="s-plate" cx="120" cy="206" rx="108" ry="22"/>
+        <g class="pudding">
+          <path class="s-body" d="M80 98 C72 130 62 165 54 196 C90 214 150 214 186 196 C178 165 168 130 160 98 Z"/>
+          <path class="s-caramel" d="M72 102 C70 78 170 78 168 102 C168 116 158 112 156 126 C154 140 144 134 142 120 C140 110 128 114 126 128 C124 142 112 142 110 126 C108 114 96 118 94 132 C92 144 80 140 80 126 C80 114 72 116 72 102 Z"/>
+          <circle class="s-ink" cx="104" cy="168" r="5.5"/>
+          <circle class="s-ink" cx="136" cy="168" r="5.5"/>
+          <path class="s-smile" d="M108 180 Q120 192 132 180"/>
+          <circle class="s-cheek" cx="90" cy="180" r="7"/>
+          <circle class="s-cheek" cx="150" cy="180" r="7"/>
+          <path class="s-stem" d="M120 74 Q124 56 138 48"/>
+          <circle class="s-cherry" cx="120" cy="80" r="13"/>
+        </g>
+      </svg>
+    </button>
+    <div class="intro">
+      <h1>Puding</h1>
+      <p>6/A sınıfının eğlence grubu.</p>
+      <span class="hint">Logoya dokun</span>
+    </div>
+  </section>
+
+  <section class="story" id="story" hidden aria-labelledby="story-title">
+    <h2 id="story-title">Puding'in hikâyesi</h2>
+
+    <div class="story-grid">
+      <div class="chapter">
+        <h3>Nasıl kuruldu?</h3>
+        <p>Puding, arkadaşların birlikte güzel vakit geçirmek istemesiyle kuruldu. Ders, sınav ve ödev dışında, sınıfta herkesin gülebileceği bir köşe olsun istedik. Puding'in kurucuları Seyit, Çağan ve Yusuf.</p>
+      </div>
+      <div class="chapter">
+        <h3>Nerede kuruldu?</h3>
+        <p>6/A sınıfında. Puding'in evi sınıfımız, üyeleri de sınıf arkadaşlarımız.</p>
+      </div>
+      <div class="chapter wide">
+        <h3>Neden kuruldu?</h3>
+        <p>Tamamen eğlence için. Puding'in başka bir görevi yok: birlikte gülmek, oyun oynamak ve sınıfı neşelendirmek.</p>
+      </div>
+    </div>
+
+    <dl class="card">
+      <dt>Grup</dt><dd>Puding</dd>
+      <dt>Kurucular</dt><dd>Seyit, Çağan, Yusuf</dd>
+      <dt>Sınıf</dt><dd>6/A</dd>
+      <dt>Amaç</dt><dd>Eğlence</dd>
+    </dl>
+
+    <div class="support">
+      <p>Haydi sen de Puding'e destek ol!</p>
+      <button class="support-btn" id="support" type="button" aria-pressed="false">Ben de destekliyorum</button>
+      <p class="thanks" id="thanks" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section class="ai" id="ai" hidden aria-labelledby="ai-title">
+    <div class="ai-head">
+      <h2 id="ai-title">Puding AI</h2>
+      <span class="badge">yapay zeka</span>
+    </div>
+    <p class="ai-lead">Puding hakkında ya da aklına takılan her şeyi bana sor.</p>
+    <div class="chips" id="chips">
+      <button class="chip" type="button">Puding ne?</button>
+      <button class="chip" type="button">Nerede kuruldu?</button>
+      <button class="chip" type="button">Neden kuruldu?</button>
+      <button class="chip" type="button">Kurucuları kim?</button>
+      <button class="chip" type="button">Nasıl destek olurum?</button>
+      <button class="chip" type="button">34 hangi il?</button>
+      <button class="chip" type="button">Espri yap</button>
+    </div>
+    <div class="ai-log" id="ai-log" role="log" aria-live="polite" aria-label="Puding AI sohbeti" tabindex="0">
+      <p class="msg bot">Merhaba! Ben Puding AI. Puding'i en iyi ben bilirim, ama başka konularda da yardım ederim. Hadi sor!</p>
+    </div>
+    <form class="ai-form" id="ai-form" autocomplete="off">
+      <label class="sr" for="ai-input">Puding AI'ya sor</label>
+      <input id="ai-input" type="text" maxlength="300" placeholder="Mesela: Puding ne?" enterkeyhint="send">
+      <button class="support-btn ai-send" id="ai-send" type="submit">Sor</button>
+      <button class="stop-btn" id="ai-stop" type="button" hidden>Durdur</button>
+    </form>
+    <p class="ai-note" id="ai-note">Puding AI bir yapay zekadır ve bazen yanılabilir. İlk soruda bir izin penceresi çıkabilir.</p>
+  </section>
+
+  <footer>Puding · 6/A · Eğlence için kuruldu</footer>
+</main>
+
+<script>
+  (function () {
+    var logo = document.getElementById("logo");
+    var story = document.getElementById("story");
+    var support = document.getElementById("support");
+    var aiSection = document.getElementById("ai");
+    var thanks = document.getElementById("thanks");
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function setStory(open) {
+      story.hidden = !open;
+      aiSection.hidden = !open;
+      logo.setAttribute("aria-expanded", open ? "true" : "false");
+      if (open) {
+        story.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+      }
+    }
+
+    logo.addEventListener("click", function () {
+      logo.classList.remove("wobble");
+      void logo.offsetWidth;
+      logo.classList.add("wobble");
+      setStory(story.hidden);
+    });
+    logo.addEventListener("animationend", function () { logo.classList.remove("wobble"); });
+
+    function render(on) {
+      support.setAttribute("aria-pressed", on ? "true" : "false");
+      support.textContent = on ? "Destekçisin! 🍮" : "Ben de destekliyorum";
+      thanks.textContent = on ? "Teşekkürler, artık Puding'in destekçisisin." : "";
+    }
+    var saved = false;
+    try { saved = localStorage.getItem("puding-destek") === "1"; } catch (e) {}
+    render(saved);
+
+    support.addEventListener("click", function () {
+      saved = !saved;
+      try { localStorage.setItem("puding-destek", saved ? "1" : "0"); } catch (e) {}
+      render(saved);
+    });
+
+    /* ---- Puding AI ---- */
+    var RULES =
+      "Sen \"Puding AI\"sın: Puding adlı sınıf grubunun web sitesindeki sohbet botusun. " +
+      "Puding hakkında bildiğin her şey şu bilgilerden ibarettir:\n" +
+      "- Puding, 6/A sınıfında eğlence için kurulan bir gruptur.\n" +
+      "- Kuruluş amacı tamamen eğlencedir.\n" +
+      "- Puding, 6/A sınıfında, arkadaşların birlikte eğlenmek istemesiyle kuruldu.\n" +
+      "- Puding'in kurucuları Seyit, Çağan ve Yusuf'tur.\n" +
+      "- Logosu bir pudingdir: karamelli, üstünde kiraz olan, gülen bir puding. Sitede logoya dokununca Puding'in hikâyesi açılır.\n" +
+      "- Sitede herkes \"Ben de destekliyorum\" butonuna basarak Puding'e destek olabilir.\n" +
+      "- Sen Puding AI'sın, bir yapay zekasın.\n\n" +
+      "Kurallar:\n" +
+      "- Türkçe, samimi ve neşeli yaz. Cevabın konuya yetecek kadar uzun olsun: basit sorularda kısa, zor sorularda ayrıntılı ol. Karşındaki büyük ihtimalle bir öğrenci, uygun bir dil kullan.\n" +
+      "- Yukarıda olmayan Puding bilgilerini asla uydurma (üye sayısı, kuruluş tarihi, okul adı, kurucular dışındaki kişi isimleri gibi). Bilmiyorsan \"Bunu bilmiyorum\" de ve Puding'i kuran arkadaşlara sormasını öner.\n" +
+      "- Puding dışındaki her konuda (ödev, bilgi, oyun, fikir, yazı yazma gibi) tam ve doğru yardım et. Sohbeti Puding'e geri getirmeye çalışma; kullanıcı Puding'den söz etmedikçe sen de etme.\n" +
+      "- Zararlı, tehlikeli ya da çocuklara uygun olmayan isteklere yardım etme, nazikçe reddet.\n" +
+      "- Gerçek isim, adres, telefon, okul gibi kişisel bilgi isteme. Kullanıcı paylaşırsa bunları paylaşmamasını söyle.";
+
+    var logEl = document.getElementById("ai-log");
+    var formEl = document.getElementById("ai-form");
+    var inputEl = document.getElementById("ai-input");
+    var sendEl = document.getElementById("ai-send");
+    var stopEl = document.getElementById("ai-stop");
+    var noteEl = document.getElementById("ai-note");
+    var chipEls = document.querySelectorAll("#chips .chip");
+
+    var sample = null;
+    var aiOff = false;
+    var busy = false;
+    var ctl = null;
+    var turns = [];
+
+    if (window.claude && typeof window.claude.use === "function") {
+      window.claude.use("sample").then(function (s) { sample = s || null; }).catch(function () { sample = null; });
+    } else {
+      noteEl.textContent = "Bu sürümde Puding AI hazır cevaplarla çalışır: Puding, plaka kodları, başkentler, hesaplar, meridyen mesafesi, tarih ve saat, espri ve bilmece.";
+    }
+
+    function addMsg(role, text) {
+      var p = document.createElement("p");
+      p.className = "msg " + role;
+      p.textContent = text;
+      logEl.appendChild(p);
+      logEl.scrollTop = logEl.scrollHeight;
+      return p;
+    }
+
+    function pudingAnswer(q) {
+      var t = q.toLocaleLowerCase("tr");
+      if (/destek/.test(t)) return "Puding'e destek olmak çok kolay! Sayfanın üstündeki logoya dokun, hikâyenin altındaki \"Ben de destekliyorum\" butonuna bas.";
+      if (/kurucu|kim kurdu|kimler kurdu/.test(t)) return "Puding'in kurucuları Seyit, Çağan ve Yusuf.";
+      if (/nerede|nerde/.test(t)) return "Puding 6/A sınıfında kuruldu.";
+      if (/neden|niye|amaç|amac|ne için|ne icin/.test(t)) return "Puding tamamen eğlence için kuruldu. Başka bir görevi yok: birlikte gülmek ve eğlenmek.";
+      if (/logo/.test(t)) return "Puding'in logosu karamelli, üstünde kiraz olan, gülen bir puding. Ona dokunursan Puding'in hikâyesi açılır.";
+      if (/nedir|kimsin|puding ne|ne\?/.test(t)) return "Puding, 6/A sınıfında eğlence için kurulan bir gruptur. Kuruluş amacı tamamen eğlence.";
+      if (/nasıl|nasil|kurul|kim/.test(t)) return "Puding, 6/A sınıfındaki arkadaşların birlikte eğlenmek istemesiyle kuruldu.";
+      return null;
+    }
+
+    /* ---- Hazır bilgiler (yapay zeka kapalıyken) ---- */
+    function fold(s) {
+      return String(s).toLocaleLowerCase("tr")
+        .replace(/ı/g, "i").replace(/ö/g, "o").replace(/ü/g, "u")
+        .replace(/ş/g, "s").replace(/ç/g, "c").replace(/ğ/g, "g")
+        .replace(/â/g, "a").replace(/î/g, "i").replace(/û/g, "u");
+    }
+    function hasWord(tk, key) {
+      for (var a = 0; a < tk.length; a++) {
+        if (tk[a] === key || (key.length >= 5 && tk[a].indexOf(key) === 0)) return true;
+      }
+      return false;
+    }
+    function sayi(n) { return n.toLocaleString("tr-TR", { maximumFractionDigits: 2 }); }
+    function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+    var PLAKALAR = ["Adana", "Adıyaman", "Afyonkarahisar", "Ağrı", "Amasya", "Ankara", "Antalya", "Artvin", "Aydın", "Balıkesir",
+      "Bilecik", "Bingöl", "Bitlis", "Bolu", "Burdur", "Bursa", "Çanakkale", "Çankırı", "Çorum", "Denizli",
+      "Diyarbakır", "Edirne", "Elazığ", "Erzincan", "Erzurum", "Eskişehir", "Gaziantep", "Giresun", "Gümüşhane", "Hakkari",
+      "Hatay", "Isparta", "Mersin", "İstanbul", "İzmir", "Kars", "Kastamonu", "Kayseri", "Kırklareli", "Kırşehir",
+      "Kocaeli", "Konya", "Kütahya", "Malatya", "Manisa", "Kahramanmaraş", "Mardin", "Muğla", "Muş", "Nevşehir",
+      "Niğde", "Ordu", "Rize", "Sakarya", "Samsun", "Siirt", "Sinop", "Sivas", "Tekirdağ", "Tokat",
+      "Trabzon", "Tunceli", "Şanlıurfa", "Uşak", "Van", "Yozgat", "Zonguldak", "Aksaray", "Bayburt", "Karaman",
+      "Kırıkkale", "Batman", "Şırnak", "Bartın", "Ardahan", "Iğdır", "Yalova", "Karabük", "Kilis", "Osmaniye", "Düzce"];
+    var PL_F = PLAKALAR.map(fold);
+
+    var BASKENT = [
+      ["Türkiye", "Ankara", ["turkiye"]], ["Almanya", "Berlin", ["almanya"]], ["Fransa", "Paris", ["fransa"]],
+      ["İtalya", "Roma", ["italya"]], ["İspanya", "Madrid", ["ispanya"]], ["İngiltere", "Londra", ["ingiltere", "birlesik krallik"]],
+      ["ABD", "Washington, D.C.", ["abd", "amerika"]], ["Japonya", "Tokyo", ["japonya"]], ["Çin", "Pekin", ["cin"]],
+      ["Rusya", "Moskova", ["rusya"]], ["Yunanistan", "Atina", ["yunanistan"]], ["Azerbaycan", "Bakü", ["azerbaycan"]],
+      ["Mısır", "Kahire", ["misir"]], ["Brezilya", "Brasilia", ["brezilya"]], ["Kanada", "Ottawa", ["kanada"]],
+      ["Avustralya", "Canberra", ["avustralya"]], ["Hindistan", "Yeni Delhi", ["hindistan"]], ["Suudi Arabistan", "Riyad", ["suudi arabistan"]],
+      ["İran", "Tahran", ["iran"]], ["Irak", "Bağdat", ["irak"]], ["Suriye", "Şam", ["suriye"]],
+      ["Bulgaristan", "Sofya", ["bulgaristan"]], ["Romanya", "Bükreş", ["romanya"]], ["Ukrayna", "Kiev (Kyiv)", ["ukrayna"]],
+      ["Polonya", "Varşova", ["polonya"]], ["Hollanda", "Amsterdam", ["hollanda"]], ["Portekiz", "Lizbon", ["portekiz"]],
+      ["İsveç", "Stockholm", ["isvec"]], ["Norveç", "Oslo", ["norvec"]], ["Meksika", "Meksiko", ["meksika"]],
+      ["Arjantin", "Buenos Aires", ["arjantin"]], ["Güney Kore", "Seul", ["guney kore"]], ["Pakistan", "İslamabad", ["pakistan"]],
+      ["Kazakistan", "Astana", ["kazakistan"]], ["İsviçre", "Bern", ["isvicre"]], ["Avusturya", "Viyana", ["avusturya"]],
+      ["Belçika", "Brüksel", ["belcika"]], ["Libya", "Trablus", ["libya"]], ["Fas", "Rabat", ["fas"]],
+      ["Cezayir", "Cezayir", ["cezayir"]], ["Tunus", "Tunus", ["tunus"]], ["Kıbrıs (KKTC)", "Lefkoşa", ["kibris", "kktc"]],
+      ["Gürcistan", "Tiflis", ["gurcistan"]], ["Ermenistan", "Erivan", ["ermenistan"]], ["Katar", "Doha", ["katar"]],
+      ["Kuveyt", "Kuveyt", ["kuveyt"]], ["Ürdün", "Amman", ["urdun"]], ["Lübnan", "Beyrut", ["lubnan"]]
+    ];
+
+    var BILGILER = [
+      [/agri dagi|turkiye.*yuksek dag|yuksek dag.*turkiye/, "Türkiye'nin en yüksek dağı Ağrı Dağı, yüksekliği yaklaşık 5.137 m."],
+      [/en yuksek dag|everest/, "Dünyanın en yüksek dağı Everest, yaklaşık 8.849 m."],
+      [/dunya.*cevre|cevre.*dunya/, "Dünya'nın ekvator çevresi yaklaşık 40.075 km."],
+      [/en buyuk gezegen/, "Güneş Sistemi'nin en büyük gezegeni Jüpiter."],
+      [/gunese en yakin gezegen/, "Güneş'e en yakın gezegen Merkür."],
+      [/kac gezegen|gezegen sayisi/, "Güneş Sistemi'nde 8 gezegen var: Merkür, Venüs, Dünya, Mars, Jüpiter, Satürn, Uranüs ve Neptün."],
+      [/aya.*uzak|ay.*(uzaklik|mesafe)/, "Ay, Dünya'dan ortalama yaklaşık 384.400 km uzakta."],
+      [/isik hizi/, "Işık boşlukta saniyede yaklaşık 299.792 km yol alır."],
+      [/pi sayisi|\bpi\b/, "Pi sayısı yaklaşık 3,14159."],
+      [/kaynama/, "Su, deniz seviyesinde 100 °C'de kaynar."],
+      [/ataturk/, "Mustafa Kemal Atatürk (1881-1938), Türkiye Cumhuriyeti'nin kurucusu ve ilk cumhurbaşkanıdır."],
+      [/cumhuriyet.*(ne zaman|kac|hangi yil)/, "Türkiye Cumhuriyeti 29 Ekim 1923'te ilan edildi."],
+      [/kac il\b|il sayisi/, "Türkiye'de 81 il var."],
+      [/en buyuk sehir|en kalabalik/, "Türkiye'nin en kalabalık şehri İstanbul."],
+      [/kac kita/, "Genelde 7 kıta sayılır: Asya, Afrika, Kuzey Amerika, Güney Amerika, Antarktika, Avrupa ve Avustralya (Okyanusya)."],
+      [/kac okyanus/, "5 okyanus sayılır: Pasifik, Atlas, Hint, Güney ve Arktik."],
+      [/greenwich|baslangic meridyen/, "Başlangıç meridyeni (0° boylam) Londra yakınlarındaki Greenwich'ten geçer."],
+      [/ekvator/, "Ekvator, Dünya'yı kuzey ve güney yarım küreye ayıran 0° enlem çizgisidir. Uzunluğu yaklaşık 40.075 km."]
+    ];
+
+    var ESPRILER = [
+      "Bilgisayar neden üşümez? Çünkü Windows'u (pencereleri) hep kapalıdır.",
+      "Matematik kitabı neden üzgün? Çünkü çok problemi var.",
+      "Puding neden hep mutlu? Çünkü tatlı bir hayatı var!",
+      "Öğretmen sormuş: \"Bir elmayı üçe bölersen ne olur?\" Öğrenci: \"Elma suyu olur hocam.\""
+    ];
+    var BILMECELER = [
+      ["Ne kadar çok olursa o kadar az görürsün. Nedir?", "Karanlık"],
+      ["Yaz kış yeşil durur, yaprakları iğne gibidir. Nedir?", "Çam ağacı"],
+      ["Suya girer ama hiç ıslanmaz. Nedir?", "Gölge"]
+    ];
+    var lastRiddle = null;
+
+    var MERIDYEN_BILGI = "Meridyenler, kutuplardan geçen boylam çizgileridir. İki komşu meridyen (1° fark) Ekvator'da yaklaşık 111,32 km aralıklıdır, kutuplara doğru daralır ve kutuplarda birleşir. Formül: derece × 111,32 × cos(enlem). Mesela \"45 enlemde 2 derece boylam kaç km?\" diye sorabilirsin.";
+    var VARSAYILAN = "Bunu bilmiyorum. Dosyadaki hazır cevaplarla Puding, il plaka kodları, ülke başkentleri, basit hesaplar, meridyen mesafesi, tarih ve saat, espri ve bilmece konularında yardımcı olabilirim. Mesela \"Ankara plaka\", \"Fransa başkenti\" ya da \"12 x 7\" yaz.";
+
+    function plakaCevap(f, tk) {
+      var m = f.match(/\b(\d{1,2})\b/);
+      if (m) {
+        var n = parseInt(m[1], 10);
+        if (n >= 1 && n <= 81) return "Plaka kodu " + (n < 10 ? "0" : "") + n + ": " + PLAKALAR[n - 1] + ".";
+        return "Türkiye'de plaka kodları 01 ile 81 arasında.";
+      }
+      var out = [];
+      for (var b = 0; b < PLAKALAR.length; b++) {
+        if (hasWord(tk, PL_F[b])) out.push(PLAKALAR[b] + " için plaka kodu: " + (b < 9 ? "0" : "") + (b + 1));
+      }
+      if (out.length) return out.join("\n");
+      return "Plaka sorarken il adını ya da 1 ile 81 arası bir sayı yaz. Mesela \"İzmir plaka\" ya da \"34 hangi il?\".";
+    }
+
+    function baskentCevap(f, tk) {
+      for (var c = 0; c < BASKENT.length; c++) {
+        var names = BASKENT[c][2];
+        for (var d = 0; d < names.length; d++) {
+          var hit = names[d].indexOf(" ") >= 0 ? f.indexOf(names[d]) >= 0 : hasWord(tk, names[d]);
+          if (hit) return BASKENT[c][0] + " için başkent: " + BASKENT[c][1] + ".";
+        }
+      }
+      return "Hangi ülkenin başkentini merak ediyorsun? Mesela \"Fransa başkenti\" yaz.";
+    }
+
+    function meridyenCevap(f) {
+      var all = f.match(/\d+(?:[.,]\d+)?/g) || [];
+      var nums = all.map(function (x) { return parseFloat(x.replace(",", ".")); });
+      var lm = f.match(/(\d+(?:[.,]\d+)?)\s*(?:°|derece)?\s*enlem/) || f.match(/enlem\w*\s*[:=]?\s*(\d+(?:[.,]\d+)?)/);
+      var lat = lm ? parseFloat(lm[1].replace(",", ".")) : null;
+      var rest = nums.slice();
+      if (lat !== null) { var ix = rest.indexOf(lat); if (ix >= 0) rest.splice(ix, 1); }
+      var deg = rest.length ? rest[0] : null;
+      if (lat !== null && (lat < 0 || lat > 90)) return "Enlem 0 ile 90 arasında olmalı.";
+      if (lat === null && deg === null) return MERIDYEN_BILGI;
+      var useLat = lat === null ? 0 : lat;
+      var dd = deg === null ? 1 : deg;
+      var km = dd * 111.32 * Math.cos(useLat * Math.PI / 180);
+      return (lat === null ? "Ekvatorda" : sayi(useLat) + "° enlemde") + " " + sayi(dd) +
+        " derecelik boylam (meridyen) farkı yaklaşık " + sayi(km) + " km eder. Formül: derece × 111,32 × cos(enlem).";
+    }
+
+    function parseHesap(tokens) {
+      var p = 0;
+      function peek() { return tokens[p]; }
+      function primary() {
+        var t = tokens[p++];
+        if (t === undefined) throw 0;
+        if (t === "(") { var v = expr(); if (tokens[p++] !== ")") throw 0; return v; }
+        if (/^\d/.test(t)) return parseFloat(t);
+        throw 0;
+      }
+      function unary() {
+        if (peek() === "-") { p++; return -unary(); }
+        if (peek() === "+") { p++; return unary(); }
+        return primary();
+      }
+      function factor() {
+        var base = unary();
+        if (peek() === "^") { p++; return Math.pow(base, factor()); }
+        return base;
+      }
+      function term() {
+        var v = factor();
+        while (peek() === "*" || peek() === "/") {
+          var op = tokens[p++];
+          var r = factor();
+          if (op === "*") v *= r;
+          else { if (r === 0) throw "div0"; v /= r; }
+        }
+        return v;
+      }
+      function expr() {
+        var v = term();
+        while (peek() === "+" || peek() === "-") {
+          var op = tokens[p++];
+          var r = term();
+          v = op === "+" ? v + r : v - r;
+        }
+        return v;
+      }
+      var res = expr();
+      if (p !== tokens.length) throw 0;
+      return res;
+    }
+
+    function hesapCevap(f) {
+      var kk = f.match(/karekok\w*\s*(\d+(?:[.,]\d+)?)/);
+      if (kk) {
+        var x = parseFloat(kk[1].replace(",", "."));
+        return "√" + sayi(x) + " ≈ " + sayi(Math.sqrt(x));
+      }
+      var s = f.replace(/\bcarpi\b|\bkere\b|×/g, "*").replace(/\bbolu\b|÷/g, "/")
+        .replace(/\barti\b/g, "+").replace(/\beksi\b/g, "-")
+        .replace(/(\d)\s*x\s*(\d)/g, "$1*$2");
+      var cands = s.match(/[\d.,()+\-*\/^\s]{3,}/g) || [];
+      var best = null;
+      for (var e = 0; e < cands.length; e++) {
+        var c = cands[e].replace(/\s+/g, "");
+        if (/\d/.test(c) && /[+\-*\/^]/.test(c) && (!best || c.length > best.length)) best = c;
+      }
+      if (!best) return null;
+      best = best.replace(/,/g, ".");
+      var tokens = best.match(/\d+(?:\.\d+)?|[+\-*\/^()]/g) || [];
+      if (tokens.join("") !== best) return null;
+      var v;
+      try { v = parseHesap(tokens); } catch (err) { return err === "div0" ? "Sıfıra bölme yapılamaz." : null; }
+      if (!isFinite(v)) return null;
+      return tokens.join(" ").replace(/\*/g, "×").replace(/\//g, "÷").replace(/\( /g, "(").replace(/ \)/g, ")") + " = " + sayi(v);
+    }
+
+    function localAnswer(q) {
+      var f = fold(q);
+      var tk = f.split(/[^a-z0-9]+/).filter(Boolean);
+      var r;
+
+      if (/seyit|cagan|yusuf/.test(f)) return "Seyit, Çağan ve Yusuf Puding'in kurucuları.";
+      if (/puding|kurucu|kurul|destek|logo|6\/a/.test(f)) {
+        if (/ne zaman|tarih/.test(f)) return "Puding'in tam kuruluş tarihini bilmiyorum. Kurucular Seyit, Çağan ve Yusuf'a sorabilirsin.";
+        if (/kac kisi|uye/.test(f)) return "Üye sayısını bilmiyorum. Kurucular Seyit, Çağan ve Yusuf'a sorabilirsin.";
+        r = pudingAnswer(q);
+        if (r) return r;
+        if (/puding|6\/a/.test(f)) return "Puding, 6/A sınıfında eğlence için kurulan bir grup. Kurucuları Seyit, Çağan ve Yusuf. Daha fazlasını bilmiyorum.";
+      }
+
+      if (/\d/.test(f) || /carpi|bolu|arti|eksi|karekok/.test(f)) {
+        r = hesapCevap(f);
+        if (r) return r;
+      }
+      if (/plaka/.test(f) || /hangi il\b/.test(f)) return plakaCevap(f, tk);
+      if (/baskent/.test(f)) return baskentCevap(f, tk);
+      if (/meridyen|boylam/.test(f)) return meridyenCevap(f);
+      if (/saat kac|saati soyle|su an saat/.test(f)) {
+        return "Şu an saat " + new Date().toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }) + ".";
+      }
+      if (/bugunun tarihi|bugun hangi gun|hangi gun|bugun gunlerden|bugun ayin kaci|tarih kac/.test(f)) {
+        return "Bugün " + new Date().toLocaleDateString("tr-TR", { weekday: "long", day: "numeric", month: "long", year: "numeric" }) + ".";
+      }
+      for (var k = 0; k < BILGILER.length; k++) {
+        if (BILGILER[k][0].test(f)) return BILGILER[k][1];
+      }
+
+      if (lastRiddle && /cevap|pes |bilmiyorum/.test(f + " ")) {
+        var ans = "Cevap: " + lastRiddle + ".";
+        lastRiddle = null;
+        return ans;
+      }
+      if (/bilmece/.test(f)) {
+        var b = pick(BILMECELER);
+        lastRiddle = b[1];
+        return b[0] + " (Cevabı için \"cevap\" yaz.)";
+      }
+      if (/espri|fikra|saka|guldur/.test(f)) return pick(ESPRILER);
+      if (/yazi tura|yazi mi tura/.test(f)) return pick(["Yazı!", "Tura!"]);
+      if (/zar at|zari at/.test(f)) return "Zar: " + (1 + Math.floor(Math.random() * 6)) + ".";
+
+      if (/nasilsin|naber|ne haber|nasil gidiyor/.test(f)) return "İyiyim, teşekkürler! Sen nasılsın?";
+      if (tk.length <= 3 && /^(iyiyim|ben iyiyim|idare eder|super|harika|cok iyi)/.test(f)) return "Sevindim! İstersen bir soru sor ya da espri iste.";
+      if (/kimsin|adin ne|ismin ne/.test(f)) return "Ben Puding AI, Puding sitesinin sohbet botuyum. Puding'i, plaka kodlarını, başkentleri, basit hesapları ve daha fazlasını bilirim.";
+      if (/insan misin|robot musun|yapay zeka misin/.test(f)) return "Ben bir yapay zekayım, insan değilim.";
+      if (tk.length <= 4 && (hasWord(tk, "selam") || hasWord(tk, "merhaba") || hasWord(tk, "mrb") || hasWord(tk, "slm") || hasWord(tk, "hey") || hasWord(tk, "hi") || hasWord(tk, "hello") || hasWord(tk, "gunaydin"))) {
+        return "Merhaba! Ben Puding AI. Neyi merak ediyorsun?";
+      }
+      if (hasWord(tk, "tesekkurler") || hasWord(tk, "tesekkur") || hasWord(tk, "sagol") || hasWord(tk, "saol") || hasWord(tk, "eyvallah")) return "Rica ederim!";
+      if (hasWord(tk, "gorusuruz") || hasWord(tk, "hoscakal") || hasWord(tk, "bye")) return "Görüşürüz! Puding'e destek olmayı unutma.";
+
+      return VARSAYILAN;
+    }
+
+    function setBusy(on) {
+      busy = on;
+      sendEl.disabled = on;
+      stopEl.hidden = !on;
+      for (var i = 0; i < chipEls.length; i++) chipEls[i].disabled = on;
+    }
+
+    async function ask(q) {
+      q = (q || "").trim();
+      if (!q || busy) return;
+      inputEl.value = "";
+      addMsg("me", q);
+      turns.push({ role: "user", content: q });
+      var bot = addMsg("bot", "Düşünüyorum…");
+      setBusy(true);
+
+      if (!sample || aiOff) {
+        var a = localAnswer(q);
+        bot.textContent = a;
+        turns.push({ role: "assistant", content: a });
+        setBusy(false);
+        return;
+      }
+
+      ctl = new AbortController();
+      try {
+        var input = [{ role: "user", content: RULES }].concat(turns.slice(-10));
+        var res = await sample(input, {
+          modelTier: "quick",
+          cache: false,
+          signal: ctl.signal,
+          onText: function (u) { bot.textContent = u.text; logEl.scrollTop = logEl.scrollHeight; }
+        });
+        bot.textContent = res.text;
+        turns.push({ role: "assistant", content: res.text });
+      } catch (e) {
+        var code = e && e.code;
+        if (code === "cancelled") {
+          bot.textContent = (e.text && e.text.trim()) ? e.text : "Durdurdum.";
+        } else if (code === "rate_limited") {
+          bot.textContent = "Çok hızlı sordun, biraz bekleyip tekrar dene.";
+        } else if (code === "upstream_error" || code === "empty_completion") {
+          bot.textContent = (e.text && e.text.trim()) ? e.text + " …" : "Bir sorun oldu, tekrar sorar mısın?";
+        } else {
+          aiOff = true;
+          var b = localAnswer(q);
+          bot.textContent = b;
+          turns.push({ role: "assistant", content: b });
+          noteEl.textContent = "Yapay zeka şu an kapalı, o yüzden Puding AI hazır cevaplarla yanıt veriyor.";
+        }
+      } finally {
+        ctl = null;
+        setBusy(false);
+        logEl.scrollTop = logEl.scrollHeight;
+      }
+    }
+
+    formEl.addEventListener("submit", function (ev) { ev.preventDefault(); ask(inputEl.value); });
+    stopEl.addEventListener("click", function () { if (ctl) ctl.abort(); });
+    for (var i = 0; i < chipEls.length; i++) {
+      chipEls[i].addEventListener("click", function (ev) { ask(ev.currentTarget.textContent); });
+    }
+  })();
+</script>
+
+</html>
